@@ -1,331 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soccer Stats Tracker</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soccer Stats Tracker - SS</title>
+    
+    <!-- APP ICON FOR HOME SCREEN (RED/BLACK OVERLAPPING SS) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='110' fill='%230a0002'/><text x='190' y='360' font-family='Impact' font-size='310' font-weight='900' font-style='italic' text-anchor='middle' fill='%23111111' stroke='%23333333' stroke-width='4'>S</text><text x='295' y='360' font-family='Impact' font-size='310' font-weight='900' font-style='italic' text-anchor='middle' fill='%23d90429' stroke='%23ff4d6d' stroke-width='2'>S</text></svg>">
 
-        body {
-            /* OVERLAPPING BACKGROUND IMAGES USING DIRECT PUBLIC URLS */
-            background-image: 
-                linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
-                url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Bukayo_Saka_2023.jpg/800px-Bukayo_Saka_2023.jpg'),
-                url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Jude_Bellingham_2024.jpg/800px-Jude_Bellingham_2024.jpg');
-            
-            /* SAKA ON THE LEFT, BELLINGHAM ON THE RIGHT */
-            background-position: 
-                center,
-                left top,
-                right bottom;
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-            /* SIZE THEM TO OVERLAP IN THE MIDDLE */
-            background-size: 
-                cover,
-                65% auto,
-                65% auto;
+        body {
+            /* OVERLAPPING BACKGROUND IMAGES FOR SOCCER PLAYERS */
+            background-image: 
+                linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+                url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Bukayo_Saka_2023.jpg/800px-Bukayo_Saka_2023.jpg'),
+                url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Jude_Bellingham_2024.jpg/800px-Jude_Bellingham_2024.jpg');
+            
+            background-position: center, left top, right bottom;
+            background-size: cover, 65% auto, 65% auto;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #0f172a;
 
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-color: #0f172a;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 25px 20px 20px 20px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+            position: relative;
+        }
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(8px);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            margin-top: 20px;
-        }
+        /* OVERLAPPING RED & BLACK 'SS' LOGO EMBEDDED AT TOP OF APP */
+        .ss-logo-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-        h1, h2 {
-            text-align: center;
-            color: #1a252c;
-            margin-top: 0;
-        }
+        .ss-logo-svg {
+            width: 120px;
+            height: 90px;
+            filter: drop-shadow(0px 4px 10px rgba(217, 4, 41, 0.4));
+        }
 
-        .date-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #eef2f5;
-            padding: 10px 14px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+        .app-title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
 
-        .date-container label {
-            font-weight: bold;
-            color: #555;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
+        h1 {
+            text-align: center;
+            color: #0f172a;
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
 
-        .date-input {
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 6px 10px;
-            font-size: 1rem;
-            font-weight: bold;
-            color: #2c3e50;
-            background: #ffffff;
-            outline: none;
-        }
+        /* MINI 'SS' BADGE NEXT TO TITLE */
+        .mini-ss-badge {
+            background: linear-gradient(135deg, #0a0002 0%, #d90429 100%);
+            color: #ffffff;
+            font-family: Impact, 'Arial Black', sans-serif;
+            font-style: italic;
+            font-size: 0.9rem;
+            padding: 2px 8px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            border: 1px solid #ff4d6d;
+        }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+        h2 {
+            text-align: center;
+            color: #1a252c;
+            margin-top: 0;
+        }
 
-        .stat-card {
-            background: #eef2f5;
-            padding: 15px 8px;
-            border-radius: 8px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+        .date-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #eef2f5;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
 
-        .stat-card h3 {
-            margin: 0;
-            font-size: 0.85rem;
-            color: #555;
-            text-transform: uppercase;
-        }
+        .date-container label {
+            font-weight: bold;
+            color: #555;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
 
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 10px 0;
-        }
+        .date-input {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #2c3e50;
+            background: #ffffff;
+            outline: none;
+        }
 
-        .touch-input {
-            width: 100%;
-            font-size: 1.8rem;
-            font-weight: bold;
-            text-align: center;
-            color: #2c3e50;
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            margin: 8px 0;
-            padding: 4px 0;
-            background: #ffffff;
-        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-        .btn-group {
-            display: flex;
-            gap: 4px;
-            justify-content: center;
-        }
+        .stat-card {
+            background: #eef2f5;
+            padding: 15px 8px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-        button {
-            border: none;
-            border-radius: 6px;
-            padding: 8px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        .stat-card h3 {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #555;
+            text-transform: uppercase;
+        }
 
-        .btn-add {
-            background-color: #27ae60;
-            color: white;
-            width: 100%;
-        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
 
-        .btn-sub {
-            background-color: #e74c3c;
-            color: white;
-            width: 36px;
-        }
+        .touch-input {
+            width: 100%;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            color: #2c3e50;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            margin: 8px 0;
+            padding: 4px 0;
+            background: #ffffff;
+        }
 
-        .btn-finish {
-            width: 100%;
-            background-color: #2980b9;
-            color: white;
-            padding: 12px;
-            font-size: 1.1rem;
-            margin-top: 10px;
-        }
+        .btn-group {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+        }
 
-        .history-section {
-            margin-top: 30px;
-        }
+        button {
+            border: none;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-        .game-log {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+        .btn-add {
+            background-color: #27ae60;
+            color: white;
+            width: 100%;
+        }
 
-        .game-log li {
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.95rem;
-        }
+        .btn-sub {
+            background-color: #e74c3c;
+            color: white;
+            width: 36px;
+        }
 
-        .clear-btn {
-            background: transparent;
-            color: #7f8c8d;
-            font-size: 0.8rem;
-            text-decoration: underline;
-            padding: 5px;
-            display: block;
-            margin: 10px auto 0 auto;
-        }
-    </style>
+        .btn-finish {
+            width: 100%;
+            background-color: #2980b9;
+            color: white;
+            padding: 12px;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .history-section {
+            margin-top: 30px;
+        }
+
+        .game-log {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .game-log li {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+        }
+
+        .clear-btn {
+            background: transparent;
+            color: #7f8c8d;
+            font-size: 0.8rem;
+            text-decoration: underline;
+            padding: 5px;
+            display: block;
+            margin: 10px auto 0 auto;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Match Tracker</h1>
+    <div class="container">
+        <!-- OVERLAPPING RED & BLACK 'SS' VECTOR LOGO -->
+        <div class="ss-logo-header">
+            <svg class="ss-logo-svg" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff334b"/>
+                        <stop offset="50%" stop-color="#d90429"/>
+                        <stop offset="100%" stop-color="#8d0018"/>
+                    </linearGradient>
+                    <filter id="shadow">
+                        <feDropShadow dx="4" dy="6" stdDeviation="5" flood-color="#000000" flood-opacity="0.6"/>
+                    </filter>
+                </defs>
+                <!-- FIRST 'S' (Black/Dark Charcoal) -->
+                <text x="140" y="190" font-family="Impact, 'Arial Black', sans-serif" font-size="210" font-weight="900" font-style="italic" text-anchor="middle" fill="#0f172a" stroke="#334155" stroke-width="3" filter="url(#shadow)">S</text>
+                <!-- SECOND 'S' (Overlapping Crimson Red) -->
+                <text x="240" y="190" font-family="Impact, 'Arial Black', sans-serif" font-size="210" font-weight="900" font-style="italic" text-anchor="middle" fill="url(#redGrad)" stroke="#ff4d6d" stroke-width="2" filter="url(#shadow)">S</text>
+            </svg>
+        </div>
 
-        <div class="date-container">
-            <label for="matchDate">Match Date:</label>
-            <input type="date" id="matchDate" class="date-input">
-        </div>
+        <div class="app-title-wrapper">
+            <h1>Match Tracker</h1>
+            <span class="mini-ss-badge">SS</span>
+        </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Goals</h3>
-                <div class="stat-value" id="goals">0</div>
-                <div class="btn-group">
-                    <button class="btn-sub" onclick="changeStat('goals', -1)">-</button>
-                    <button class="btn-add" onclick="changeStat('goals', 1)">+1</button>
-                </div>
-            </div>
+        <div class="date-container">
+            <label for="matchDate">Match Date:</label>
+            <input type="date" id="matchDate" class="date-input">
+        </div>
 
-            <div class="stat-card">
-                <h3>Assists</h3>
-                <div class="stat-value" id="assists">0</div>
-                <div class="btn-group">
-                    <button class="btn-sub" onclick="changeStat('assists', -1)">-</button>
-                    <button class="btn-add" onclick="changeStat('assists', 1)">+1</button>
-                </div>
-            </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Goals</h3>
+                <div class="stat-value" id="goals">0</div>
+                <div class="btn-group">
+                    <button class="btn-sub" onclick="changeStat('goals', -1)">-</button>
+                    <button class="btn-add" onclick="changeStat('goals', 1)">+1</button>
+                </div>
+            </div>
 
-            <div class="stat-card">
-                <h3>Touches</h3>
-                <input type="number" id="touches" class="touch-input" value="0" min="0" oninput="updateTouchState(this.value)">
-                <div class="btn-group">
-                    <button class="btn-add" style="background:#8e44ad;" onclick="addTouches(5)">+5</button>
-                    <button class="btn-add" onclick="addTouches(1)">+1</button>
-                </div>
-            </div>
-        </div>
+            <div class="stat-card">
+                <h3>Assists</h3>
+                <div class="stat-value" id="assists">0</div>
+                <div class="btn-group">
+                    <button class="btn-sub" onclick="changeStat('assists', -1)">-</button>
+                    <button class="btn-add" onclick="changeStat('assists', 1)">+1</button>
+                </div>
+            </div>
 
-        <button class="btn-finish" onclick="finishGame()">End Game & Save Stats</button>
+            <div class="stat-card">
+                <h3>Touches</h3>
+                <input type="number" id="touches" class="touch-input" value="0" min="0" oninput="updateTouchState(this.value)">
+                <div class="btn-group">
+                    <button class="btn-add" style="background:#8e44ad;" onclick="addTouches(5)">+5</button>
+                    <button class="btn-add" onclick="addTouches(1)">+1</button>
+                </div>
+            </div>
+        </div>
 
-        <div class="history-section">
-            <h2>Game Log History</h2>
-            <ul class="game-log" id="gameLog"></ul>
-            <button class="clear-btn" onclick="clearHistory()">Clear History</button>
-        </div>
-    </div>
+        <button class="btn-finish" onclick="finishGame()">End Game & Save Stats</button>
 
-    <script>
-        document.getElementById('matchDate').valueAsDate = new Date();
+        <div class="history-section">
+            <h2>Game Log History</h2>
+            <ul class="game-log" id="gameLog"></ul>
+            <button class="clear-btn" onclick="clearHistory()">Clear History</button>
+        </div>
+    </div>
 
-        let currentMatch = { goals: 0, assists: 0, touches: 0 };
-        let matchHistory = JSON.parse(localStorage.getItem('soccerHistory')) || [];
-        renderHistory();
+    <script>
+        document.getElementById('matchDate').valueAsDate = new Date();
 
-        function changeStat(stat, amount) {
-            currentMatch[stat] += amount;
-            if (currentMatch[stat] < 0) currentMatch[stat] = 0;
-            document.getElementById(stat).innerText = currentMatch[stat];
-        }
+        let currentMatch = { goals: 0, assists: 0, touches: 0 };
+        let matchHistory = JSON.parse(localStorage.getItem('soccerHistory')) || [];
+        renderHistory();
 
-        function updateTouchState(value) {
-            let num = parseInt(value);
-            if (isNaN(num) || num < 0) num = 0;
-            currentMatch.touches = num;
-        }
+        function changeStat(stat, amount) {
+            currentMatch[stat] += amount;
+            if (currentMatch[stat] < 0) currentMatch[stat] = 0;
+            document.getElementById(stat).innerText = currentMatch[stat];
+        }
 
-        function addTouches(amount) {
-            currentMatch.touches += amount;
-            document.getElementById('touches').value = currentMatch.touches;
-        }
+        function updateTouchState(value) {
+            let num = parseInt(value);
+            if (isNaN(num) || num < 0) num = 0;
+            currentMatch.touches = num;
+        }
 
-        function finishGame() {
-            const selectedDate = document.getElementById('matchDate').value;
-            if (!selectedDate) return alert("Please select a valid date!");
-            if (currentMatch.goals === 0 && currentMatch.assists === 0 && currentMatch.touches === 0) {
-                return alert("No stats recorded for this game yet!");
-            }
+        function addTouches(amount) {
+            currentMatch.touches += amount;
+            document.getElementById('touches').value = currentMatch.touches;
+        }
 
-            const dateParts = selectedDate.split('-');
-            const formattedDate = `${dateParts[1]}/${dateParts[2]}/${dateParts[0]}`;
+        function finishGame() {
+            const selectedDate = document.getElementById('matchDate').value;
+            if (!selectedDate) return alert("Please select a valid date!");
+            if (currentMatch.goals === 0 && currentMatch.assists === 0 && currentMatch.touches === 0) {
+                return alert("No stats recorded for this game yet!");
+            }
 
-            const gameData = {
-                id: Date.now(),
-                date: formattedDate,
-                rawDate: selectedDate,
-                goals: currentMatch.goals,
-                assists: currentMatch.assists,
-                touches: currentMatch.touches
-            };
+            const dateParts = selectedDate.split('-');
+            const formattedDate = `${dateParts[1]}/${dateParts[2]}/${dateParts[0]}`;
 
-            matchHistory.unshift(gameData);
-            localStorage.setItem('soccerHistory', JSON.stringify(matchHistory));
+            const gameData = {
+                id: Date.now(),
+                date: formattedDate,
+                rawDate: selectedDate,
+                goals: currentMatch.goals,
+                assists: currentMatch.assists,
+                touches: currentMatch.touches
+            };
 
-            currentMatch = { goals: 0, assists: 0, touches: 0 };
-            document.getElementById('goals').innerText = 0;
-            document.getElementById('assists').innerText = 0;
-            document.getElementById('touches').value = 0;
-            document.getElementById('matchDate').valueAsDate = new Date();
+            matchHistory.unshift(gameData);
+            localStorage.setItem('soccerHistory', JSON.stringify(matchHistory));
 
-            renderHistory();
-        }
+            currentMatch = { goals: 0, assists: 0, touches: 0 };
+            document.getElementById('goals').innerText = 0;
+            document.getElementById('assists').innerText = 0;
+            document.getElementById('touches').value = 0;
+            document.getElementById('matchDate').valueAsDate = new Date();
 
-        function renderHistory() {
-            const logElement = document.getElementById('gameLog');
-            logElement.innerHTML = '';
-            if (matchHistory.length === 0) {
-                logElement.innerHTML = '<li style="justify-content: center; color: #888;">No games recorded yet.</li>';
-                return;
-            }
+            renderHistory();
+        }
 
-            matchHistory.forEach((game) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <strong>📅 ${game.date}</strong>
-                    <span>⚽ ${game.goals} G | 🅰️ ${game.assists} A | 👟 ${game.touches} T</span>
-                `;
-                logElement.appendChild(li);
-            });
-        }
+        function renderHistory() {
+            const logElement = document.getElementById('gameLog');
+            logElement.innerHTML = '';
+            if (matchHistory.length === 0) {
+                logElement.innerHTML = '<li style="justify-content: center; color: #888;">No games recorded yet.</li>';
+                return;
+            }
 
-        function clearHistory() {
-            if (confirm("Are you sure you want to clear all saved match history?")) {
-                matchHistory = [];
-                localStorage.removeItem('soccerHistory');
-                renderHistory();
-            }
-        }
-    </script>
+            matchHistory.forEach((game) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>📅 ${game.date}</strong>
+                    <span>⚽ ${game.goals} G | 🅰️ ${game.assists} A | 👟 ${game.touches} T</span>
+                `;
+                logElement.appendChild(li);
+            });
+        }
+
+        function clearHistory() {
+            if (confirm("Are you sure you want to clear all saved match history?")) {
+                matchHistory = [];
+                localStorage.removeItem('soccerHistory');
+                renderHistory();
+            }
+        }
+    </script>
 </body>
 </html>
