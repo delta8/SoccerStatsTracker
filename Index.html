@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soccer Stats Tracker</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            /* OVERLAPPING BACKGROUND IMAGES USING DIRECT PUBLIC URLS */
+            background-image: 
+                linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+                url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Bukayo_Saka_2023.jpg/800px-Bukayo_Saka_2023.jpg'),
+                url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Jude_Bellingham_2024.jpg/800px-Jude_Bellingham_2024.jpg');
+            
+            /* SAKA ON THE LEFT, BELLINGHAM ON THE RIGHT */
+            background-position: 
+                center,
+                left top,
+                right bottom;
+
+            /* SIZE THEM TO OVERLAP IN THE MIDDLE */
+            background-size: 
+                cover,
+                65% auto,
+                65% auto;
+
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #0f172a;
+
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(8px);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #1a252c;
+            margin-top: 0;
+        }
+
+        .date-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #eef2f5;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .date-container label {
+            font-weight: bold;
+            color: #555;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .date-input {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #2c3e50;
+            background: #ffffff;
+            outline: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #eef2f5;
+            padding: 15px 8px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #555;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+
+        .touch-input {
+            width: 100%;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            color: #2c3e50;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            margin: 8px 0;
+            padding: 4px 0;
+            background: #ffffff;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+        }
+
+        button {
+            border: none;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-add {
+            background-color: #27ae60;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-sub {
+            background-color: #e74c3c;
+            color: white;
+            width: 36px;
+        }
+
+        .btn-finish {
+            width: 100%;
+            background-color: #2980b9;
+            color: white;
+            padding: 12px;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .history-section {
+            margin-top: 30px;
+        }
+
+        .game-log {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .game-log li {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+        }
+
+        .clear-btn {
+            background: transparent;
+            color: #7f8c8d;
+            font-size: 0.8rem;
+            text-decoration: underline;
+            padding: 5px;
+            display: block;
+            margin: 10px auto 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Match Tracker</h1>
+
+        <div class="date-container">
+            <label for="matchDate">Match Date:</label>
+            <input type="date" id="matchDate" class="date-input">
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Goals</h3>
+                <div class="stat-value" id="goals">0</div>
+                <div class="btn-group">
+                    <button class="btn-sub" onclick="changeStat('goals', -1)">-</button>
+                    <button class="btn-add" onclick="changeStat('goals', 1)">+1</button>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <h3>Assists</h3>
+                <div class="stat-value" id="assists">0</div>
+                <div class="btn-group">
+                    <button class="btn-sub" onclick="changeStat('assists', -1)">-</button>
+                    <button class="btn-add" onclick="changeStat('assists', 1)">+1</button>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <h3>Touches</h3>
+                <input type="number" id="touches" class="touch-input" value="0" min="0" oninput="updateTouchState(this.value)">
+                <div class="btn-group">
+                    <button class="btn-add" style="background:#8e44ad;" onclick="addTouches(5)">+5</button>
+                    <button class="btn-add" onclick="addTouches(1)">+1</button>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-finish" onclick="finishGame()">End Game & Save Stats</button>
+
+        <div class="history-section">
+            <h2>Game Log History</h2>
+            <ul class="game-log" id="gameLog"></ul>
+            <button class="clear-btn" onclick="clearHistory()">Clear History</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('matchDate').valueAsDate = new Date();
+
+        let currentMatch = { goals: 0, assists: 0, touches: 0 };
+        let matchHistory = JSON.parse(localStorage.getItem('soccerHistory')) || [];
+        renderHistory();
+
+        function changeStat(stat, amount) {
+            currentMatch[stat] += amount;
+            if (currentMatch[stat] < 0) currentMatch[stat] = 0;
+            document.getElementById(stat).innerText = currentMatch[stat];
+        }
+
+        function updateTouchState(value) {
+            let num = parseInt(value);
+            if (isNaN(num) || num < 0) num = 0;
+            currentMatch.touches = num;
+        }
+
+        function addTouches(amount) {
+            currentMatch.touches += amount;
+            document.getElementById('touches').value = currentMatch.touches;
+        }
+
+        function finishGame() {
+            const selectedDate = document.getElementById('matchDate').value;
+            if (!selectedDate) return alert("Please select a valid date!");
+            if (currentMatch.goals === 0 && currentMatch.assists === 0 && currentMatch.touches === 0) {
+                return alert("No stats recorded for this game yet!");
+            }
+
+            const dateParts = selectedDate.split('-');
+            const formattedDate = `${dateParts[1]}/${dateParts[2]}/${dateParts[0]}`;
+
+            const gameData = {
+                id: Date.now(),
+                date: formattedDate,
+                rawDate: selectedDate,
+                goals: currentMatch.goals,
+                assists: currentMatch.assists,
+                touches: currentMatch.touches
+            };
+
+            matchHistory.unshift(gameData);
+            localStorage.setItem('soccerHistory', JSON.stringify(matchHistory));
+
+            currentMatch = { goals: 0, assists: 0, touches: 0 };
+            document.getElementById('goals').innerText = 0;
+            document.getElementById('assists').innerText = 0;
+            document.getElementById('touches').value = 0;
+            document.getElementById('matchDate').valueAsDate = new Date();
+
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const logElement = document.getElementById('gameLog');
+            logElement.innerHTML = '';
+            if (matchHistory.length === 0) {
+                logElement.innerHTML = '<li style="justify-content: center; color: #888;">No games recorded yet.</li>';
+                return;
+            }
+
+            matchHistory.forEach((game) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>📅 ${game.date}</strong>
+                    <span>⚽ ${game.goals} G | 🅰️ ${game.assists} A | 👟 ${game.touches} T</span>
+                `;
+                logElement.appendChild(li);
+            });
+        }
+
+        function clearHistory() {
+            if (confirm("Are you sure you want to clear all saved match history?")) {
+                matchHistory = [];
+                localStorage.removeItem('soccerHistory');
+                renderHistory();
+            }
+        }
+    </script>
+</body>
+</html>
